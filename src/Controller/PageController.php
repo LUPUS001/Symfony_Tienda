@@ -5,14 +5,21 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Team;
 
 class PageController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
-        return $this->render('page/index.html.twig', []);
+        $repository = $doctrine->getRepository(Team::class);
+        $team = $repository->findAll();
+
+        // Pasar la variable 'team' a la vista
+        return $this->render('page/index.html.twig', compact('team'));
     }
+
 
     #[Route('/about', name: 'about')]
     public function about(): Response
