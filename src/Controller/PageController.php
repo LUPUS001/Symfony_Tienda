@@ -22,9 +22,12 @@ class PageController extends AbstractController
 
 
     #[Route('/about', name: 'about')]
-    public function about(): Response
+    public function about(ManagerRegistry $doctrine): Response
     {
-        return $this->render('page/about.html.twig', []);
+        $repository = $doctrine->getRepository(Team::class);
+        $team = $repository->findAll();
+    
+        return $this->render('page/about.html.twig', compact('team'));
     }
 
     #[Route('/service', name: 'service')]
@@ -40,9 +43,12 @@ class PageController extends AbstractController
     }
 
     #[Route('/team', name: 'team')]
-    public function team(): Response
+    public function team(ManagerRegistry $doctrine): Response
     {
-        return $this->render('page/team.html.twig', []);
+        $repository = $doctrine->getRepository(Team::class);
+        $team = $repository->findAll();
+
+        return $this->render('page/team.html.twig', compact('team'));
     }
 
     #[Route('/testimonial', name: 'testimonial')]
