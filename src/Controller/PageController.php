@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Team;
+use App\Service\ProductsService;
 
 class PageController extends AbstractController
 {
@@ -63,4 +64,13 @@ class PageController extends AbstractController
         return $this->render('page/contact.html.twig', []);
     }
 
+    #[Route('/product', name: 'product')]
+    public function product(ProductsService $productsService): Response
+    {
+        // El servicio nos da los productos
+        $products = $productsService->getProducts();
+        
+        // Se los pasamos a la vista
+        return $this->render('product/product.html.twig', compact('products'));
+    }
 }
