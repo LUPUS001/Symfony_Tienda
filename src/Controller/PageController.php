@@ -12,13 +12,15 @@ use App\Service\ProductsService;
 class PageController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(ManagerRegistry $doctrine, ProductsService $productsService): Response
     {
         $repository = $doctrine->getRepository(Team::class);
         $team = $repository->findAll();
 
+        $products = $productsService->getProducts();
+
         // Pasar la variable 'team' a la vista
-        return $this->render('page/index.html.twig', compact('team'));
+        return $this->render('page/index.html.twig', compact('team', 'products'));
     }
 
 
