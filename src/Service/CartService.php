@@ -52,4 +52,18 @@ class CartService
             $this->getSession()->set(self::KEY, $cart);
         }
     }
+
+    // Nuevo método para eliminar un producto del carrito
+    // Este método eliminará el ID de la sesión.
+
+    public function delete(int $id): void
+    {
+        $cart = $this->getCart();
+        
+        // Si existe, lo borramos con unset
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            $this->getSession()->set(self::KEY, $cart);
+        }
+    }
 }

@@ -20,11 +20,13 @@
                             <th>Precio</th>
                             <th>Cantidad</th>
                             <th>Total</th>
+                            <th>Eliminar</th> {# 1. Nueva columna para eliminar #}
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in items %}
-                            <tr>
+                        {# 2. Añadimos el ID dinámico a la fila para que jQuery sepa qué borrar #}
+                            <tr id="item-{{ item.id }}">
                                 <td>
                                     <img src="{{ asset('img/' ~ item.photo) }}" style="width: 50px" class="me-2">
                                     {{ item.name }}
@@ -32,6 +34,12 @@
                                 <td>{{ item.price }} €</td>
                                 <td>{{ item.quantity }}</td>
                                 <td>{{ item.price * item.quantity }} €</td>
+                                <td>
+                                    {# 3. Botón con clase 'btn-delete' y el ID del producto #}
+                                    <button class="btn btn-sm btn-danger btn-delete" data-id="{{ item.id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

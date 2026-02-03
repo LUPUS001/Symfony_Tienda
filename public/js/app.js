@@ -66,4 +66,19 @@
         const modal = bootstrap.Modal.getInstance(modalEl);
         if(modal) modal.hide();
     });
+
+    // 3. BORRAR PRODUCTO (3.4.2)
+    $(".btn-delete").click(function() {
+        // Obtenemos el ID del botón pulsado
+        const id = $(this).data('id');
+        const href = `/cart/delete/${id}`;
+        
+        // Enviamos la petición POST para borrar
+        $.post(href, function(data) {
+            // Efecto visual: Ocultar la fila y luego eliminarla del HTML
+            $(`#item-${id}`).fadeOut('slow', function() {
+                $(this).remove();
+            });
+        });
+    });
 })();

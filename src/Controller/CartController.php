@@ -91,4 +91,13 @@ class CartController extends AbstractController
         // Devolvemos un OK básico
         return new JsonResponse(['status' => 'success']);
     }
+
+    // Nueva ruta para eliminar un producto del carrito
+    // Esta ruta recibirá la petición de borrado.
+    #[Route('/delete/{id}', name: 'cart_delete', methods: ['POST', 'DELETE'], requirements: ['id' => '\d+'])]
+    public function cart_delete(int $id): JsonResponse
+    {
+        $this->cart->delete($id);
+        return new JsonResponse(['status' => 'success']);
+    }
 }
