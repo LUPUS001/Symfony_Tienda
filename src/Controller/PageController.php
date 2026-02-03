@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
@@ -67,10 +68,10 @@ class PageController extends AbstractController
     }
 
     #[Route('/product', name: 'product')]
-    public function product(ProductsService $productsService): Response
+    public function product(ProductRepository $repository): Response
     {
         // El servicio nos da los productos
-        $products = $productsService->getProducts();
+        $products = $repository->findAll();
         
         // Se los pasamos a la vista
         return $this->render('product/product.html.twig', compact('products'));

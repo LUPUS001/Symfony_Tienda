@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Service\CartService;
+use App\Repository\ProductRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,16 +14,45 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path:'/cart')]
 class CartController extends AbstractController
 {
-    private $doctrine;
     private $repository;
     private $cart;
     
-    //Le inyectamos CartService como una dependencia
-    public  function __construct(ManagerRegistry $doctrine, CartService $cart)
+    // Modificamos el constructor para inyectar ProductRepository directamente
+    public  function __construct(ProductRepository $repository, CartService $cart)
     {
-        $this->doctrine = $doctrine;
-        $this->repository = $doctrine->getRepository(Product::class);
+        $this->repository = $repository;
         $this->cart = $cart;
+    }
+
+    #[Route('/', name: 'app_cart')]
+    public function index(): Response
+    {
+        // 1. Obtenemos los productos de la BD usando nuestro método nuevo
+        $products = $this->repository->getFromCart($this->cart);
+
+        $items = [];
+        $totalCart = 0;
+
+        // 2. Recorremos cada producto para añadirle la cantidad (que viene de la sesión)
+        foreach($products as $product){
+            $item = [
+                "id" => $product->getId(),
+                "name" => $product->getName(),
+                "price" => $product->getPrice(),
+                "photo" => $product->getPhoto(), // Ojo: usa getImagen() si tu entidad está en español
+                "quantity" => $this->cart->getCart()[$product->getId()]
+            ];
+            
+            // Calculamos el total (precio * cantidad)
+            $totalCart += $item["quantity"] * $item["price"];
+            $items[] = $item;
+        }
+
+        // 3. Renderizamos la vista
+        return $this->render('cart/index.html.twig', [
+            'items' => $items, 
+            'totalCart' => $totalCart
+        ]);
     }
 
     #[Route('/add/{id}', name: 'cart_add', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]

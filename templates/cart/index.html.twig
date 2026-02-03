@@ -1,20 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Carrito de la compra{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h2 class="mb-4 text-uppercase">Carrito de la compra</h2>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/alumno/symfony/Symfony_Tienda/src/Controller/CartController.php</code></li>
-        <li>Your template at <code>/home/alumno/symfony/Symfony_Tienda/templates/cart/index.html.twig</code></li>
-    </ul>
+            {% if items is empty %}
+                <div class="alert alert-info">
+                    El carrito está vacío.
+                </div>
+            {% else %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td>
+                                    <img src="{{ asset('img/' ~ item.photo) }}" style="width: 50px" class="me-2">
+                                    {{ item.name }}
+                                </td>
+                                <td>{{ item.price }} €</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price * item.quantity }} €</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="text-end mt-4">
+                    <h3>Total: {{ totalCart }} €</h3>
+                    <a href="#" class="btn btn-success">Tramitar pedido</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
