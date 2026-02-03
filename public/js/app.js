@@ -44,13 +44,18 @@
     $(".update").on('click', function() {
         const id = $(this).data('id'); // Recuperamos el ID que guardamos antes (En la línea 35 .find(".update")...)
         const quantity = $("#quantity").val();
+        
+        // Llamada AJAX a la ruta que acabamos de crear
         const href = `/cart/update/${id}/${quantity}`;
 
         $.post(href, function(data) {
-            // Cerramos el modal tras actualizar
+            // Cerramos el modal tras actualizar, Opcion A
             const modalEl = document.getElementById('cart-modal');
             const modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide();
+            modal.hide(); 
+            
+            // Cuando se actualice mostramos un aviso, Opcion B: Más simple y más visual
+            /* alert("Cantidad actualizada correctamente a " + quantity); */
         });
     });
 
