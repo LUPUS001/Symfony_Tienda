@@ -69,16 +69,18 @@
 
     // 3. BORRAR PRODUCTO (3.4.2)
     $(".btn-delete").click(function() {
-        // Obtenemos el ID del botón pulsado
         const id = $(this).data('id');
         const href = `/cart/delete/${id}`;
         
-        // Enviamos la petición POST para borrar
         $.post(href, function(data) {
-            // Efecto visual: Ocultar la fila y luego eliminarla del HTML
+            // 1. Efecto visual de borrar fila
             $(`#item-${id}`).fadeOut('slow', function() {
                 $(this).remove();
             });
+
+            // 2. ACTUALIZAR EL TOTAL (Nuevo)
+            // Buscamos el h3 con el id que pusimos y le cambiamos el texto
+            $("#cart-total").text("Total: " + data.total + " €");
         });
     });
 })();

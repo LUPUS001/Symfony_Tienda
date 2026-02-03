@@ -97,7 +97,20 @@ class CartController extends AbstractController
     #[Route('/delete/{id}', name: 'cart_delete', methods: ['POST', 'DELETE'], requirements: ['id' => '\d+'])]
     public function cart_delete(int $id): JsonResponse
     {
+        // 1. Borramos
         $this->cart->delete($id);
-        return new JsonResponse(['status' => 'success']);
+        
+        // 2. Recalculamos el total (copiamos lógica del index)
+        $products = $this->repository->getFromCart($this->cart);
+        $totalCart = 0;
+        foreach($products as $product){
+             $totalCart += $product->getPrice() * $this->cart->getCart()[$product->getId()];
+        }
+
+        // 3. Devolvemos el status Y el nuevo total
+        return new JsonResponse([
+            'status' => 'success', 
+            'total' => $totalCart
+        ]);
     }
 }
