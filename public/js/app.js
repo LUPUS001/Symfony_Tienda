@@ -19,6 +19,7 @@
     // --- LÓGICA DEL CARRITO ---
     const cartModal = $("#cart-modal");
 
+    // 1. AL ABRIR EL MODAL
     $(".open-cart").click(function(event) {
         event.preventDefault();
         const id = $(this).data('id');
@@ -29,12 +30,30 @@
             $(cartModal).find(".name").text(data.name);
             $(cartModal).find("img").attr("src", "/img/" + data.photo);
             $(cartModal).find("#quantity").val(data.quantity);
+
+            // Le pegamos el ID al botón Update para usarlo luego
+            $(cartModal).find(".update").data('id', data.id);
             
             // Abrimos el modal (Bootstrap 5)
             const modalInstance = new bootstrap.Modal(document.getElementById('cart-modal'));
             modalInstance.show();
         });
     });
+    
+    // 2. AL PULSAR EL BOTÓN UPDATE (NUEVO)
+    $(".update").on('click', function() {
+        const id = $(this).data('id'); // Recuperamos el ID que guardamos antes (En la línea 35 .find(".update")...)
+        const quantity = $("#quantity").val();
+        const href = `/cart/update/${id}/${quantity}`;
+
+        $.post(href, function(data) {
+            // Cerramos el modal tras actualizar
+            const modalEl = document.getElementById('cart-modal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        });
+    });
+
     
     // Cerrar modal 
     $(".closeCart").click(function() {

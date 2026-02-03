@@ -41,4 +41,15 @@ class CartService
         // 3. Guardamos el carrito actualizado en la sesión
         $this->getSession()->set(self::KEY, $cart);
     }
+
+    public function update(int $id, int $quantity): void
+    {
+        $cart = $this->getCart(); // Obtenemos el carrito actual
+
+        // Solo actualizamos si el producto ya existe en el carro
+        if (isset($cart[$id])) {
+            $cart[$id] = $quantity;
+            $this->getSession()->set(self::KEY, $cart);
+        }
+    }
 }

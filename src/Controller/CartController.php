@@ -81,4 +81,14 @@ class CartController extends AbstractController
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
+
+    // Creamos la ruta que recibirá la orden del JavaScript para actualizar la cantidad
+    #[Route('/update/{id}/{quantity}', name: 'cart_update', methods: ['POST', 'GET'], requirements: ['id' => '\d+', 'quantity' => '\d+'])]
+    public function cart_update(int $id, int $quantity): JsonResponse
+    {
+        $this->cart->update($id, $quantity);
+        
+        // Devolvemos un OK básico
+        return new JsonResponse(['status' => 'success']);
+    }
 }
