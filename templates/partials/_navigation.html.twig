@@ -19,6 +19,25 @@
 																			'cart.totalItems' que se obtiene del CartService. Es el contador de productos en el carrito. #}
         </a>
 		
+		{% if app.user %}
+            {# USUARIO LOGUEADO #}
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle text-primary fw-bold" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-fill"></i> {{ app.user.email }}
+                </a>
+                <div class="dropdown-menu m-0">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="/admin" class="dropdown-item">Panel Admin</a>
+                    {% endif %}
+                    <a href="{{ path('app_logout') }}" class="dropdown-item text-danger">Cerrar Sesión</a>
+                </div>
+            </div>
+        {% else %}
+            {# USUARIO ANÓNIMO #}
+            <a href="{{ path('app_login') }}" class="nav-item nav-link">Login</a>
+            <a href="{{ path('app_register') }}" class="nav-item nav-link">Registro</a>
+        {% endif %}
+		
 		<div class="nav-item dropdown">
 			<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
 			<div class="dropdown-menu m-0">
