@@ -66,4 +66,11 @@ class CartService
             $this->getSession()->set(self::KEY, $cart);
         }
     }
+
+    // Este método devuelve el número total de productos en el carrito sumando las cantidades
+    public function getTotalItems(): int
+    {
+        // Suma todos los valores del array (las cantidades)
+        return array_sum($this->getCart());
+    }
 }

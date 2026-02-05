@@ -76,7 +76,8 @@ class CartController extends AbstractController
             "name" => $product->getName(),  
             "price" => $product->getPrice(), 
             "photo" => $product->getPhoto(), 
-            "quantity" => $this->cart->getCart()[$product->getId()]
+            "quantity" => $this->cart->getCart()[$product->getId()],
+            "totalItems" => $this->cart->getTotalItems() 
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
@@ -88,8 +89,11 @@ class CartController extends AbstractController
     {
         $this->cart->update($id, $quantity);
         
-        // Devolvemos un OK básico
-        return new JsonResponse(['status' => 'success']);
+        // Devolvemos el totalItems actualizado
+        return new JsonResponse([
+            'status' => 'success', 
+            'totalItems' => $this->cart->getTotalItems() 
+        ]);
     }
 
     // Nueva ruta para eliminar un producto del carrito
@@ -110,7 +114,8 @@ class CartController extends AbstractController
         // 3. Devolvemos el status Y el nuevo total
         return new JsonResponse([
             'status' => 'success', 
-            'total' => $totalCart
+            'total' => $totalCart,
+            'totalItems' => $this->cart->getTotalItems() 
         ]);
     }
 }

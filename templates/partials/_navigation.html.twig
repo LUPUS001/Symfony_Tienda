@@ -15,6 +15,8 @@
 
 		<a href="{{ path('app_cart') }}" class="nav-item nav-link {{ (app.request.attributes.get('_route') == 'app_cart') ? 'active' : '' }}">
             <i class="bi bi-cart-fill me-1"></i> Cart {# He añadido <i class="bi bi-cart-fill"></i> para que se vea el icono del carrito junto al texto. #}
+			(<span class="cart-total-items">{{ cart.totalItems }}</span>) {# Aquí se muestra el número total de productos en el carrito usando la variable 
+																			'cart.totalItems' que se obtiene del CartService. Es el contador de productos en el carrito. #}
         </a>
 		
 		<div class="nav-item dropdown">

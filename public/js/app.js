@@ -34,6 +34,9 @@
             // Le pegamos el ID al botón Update para usarlo luego
             $(cartModal).find(".update").data('id', data.id);
             
+            // Actualizar contador navbar
+            $(".cart-total-items").text(data.totalItems);
+
             // Abrimos el modal (Bootstrap 5)
             const modalInstance = new bootstrap.Modal(document.getElementById('cart-modal'));
             modalInstance.show();
@@ -56,6 +59,9 @@
             
             // Cuando se actualice mostramos un aviso, Opcion B: Más simple y más visual
             /* alert("Cantidad actualizada correctamente a " + quantity); */
+
+            // Actualizar contador navbar
+            $(".cart-total-items").text(data.totalItems);
         });
     });
 
@@ -81,6 +87,9 @@
             // 2. ACTUALIZAR EL TOTAL (Nuevo)
             // Buscamos el h3 con el id que pusimos y le cambiamos el texto
             $("#cart-total").text("Total: " + data.total + " €");
+
+            // Actualizar contador navbar
+            $(".cart-total-items").text(data.totalItems);
         });
     });
 })();
